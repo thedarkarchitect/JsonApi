@@ -21,7 +21,7 @@ const PostUpload = () => {
   }
 
   return (
-    <div className='bg-yellow-300'>
+    <div className='bg-yellow-300 h-screen'>
       <PostForm postSubmit={createPost}  />
     </div>
   )

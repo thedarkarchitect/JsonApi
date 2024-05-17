@@ -10,6 +10,8 @@ import Posts from "./pages/Posts";
 import PostUpload from "./pages/PostUpload";
 import PostDetails from "./pages/PostDetails";
 import Home from "./pages/Home";
+import "../src/App.css";
+import ProductUpload from "./pages/ProductUpload";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -22,6 +24,12 @@ const router = createBrowserRouter(
 
 			<Route path="/">
 				<Route index element={<Home />}/>
+				
+			</Route>
+
+			<Route path="/products">
+				<Route path="/products/createProduct" element={<ProductUpload />}/>
+				
 			</Route>
 
 			{/* Home Page Routes */}
