@@ -7,7 +7,7 @@ const PostCards = () => {
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
-				const res = await fetch("http://localhost:3001/api/posts");
+				const res = await fetch("https://petco.onrender.com/api/v1/posts/");
 				const data = await res.json();
 				setPosts(data.posts);
 			} catch (error) {

@@ -6,7 +6,7 @@ const PostUpload = () => {
   const createPost = async (newPost) => {
     try {
       console.log(newPost)
-			await fetch("http://localhost:3001/api/posts/createPost", {
+			await fetch("https://petco.onrender.com/api/v1/posts/createPost", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json", 

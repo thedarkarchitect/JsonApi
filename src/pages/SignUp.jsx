@@ -5,7 +5,7 @@ const SignUp = () => {
 	const createUser = async (newUser) => {
 		try{
 			console.log(newUser)
-			await fetch("http://localhost:3001/api/auth/signUp", {
+			await fetch("https://petco.onrender.com/api/v1/auth/signup", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json", 

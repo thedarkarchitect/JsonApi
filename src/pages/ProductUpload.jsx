@@ -5,7 +5,7 @@ const ProductUpload = () => {
 	const createProduct = async (newProduct) => {
 		try {
 			console.log(newProduct);
-			await fetch("http://localhost:3001/api/products/createProduct", {
+			await fetch("https://petco.onrender.com/api/v1/products/createProduct", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

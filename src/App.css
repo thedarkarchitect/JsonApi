@@ -293,6 +293,7 @@ span.text-yellow {
 	font-size: 30px;
 	display: flex;
 	gap: 10px;
+	color: #ffd000;
 }
 .cart-heading {
 	display: flex;

@@ -7,7 +7,7 @@ const Products = () => {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				const res = await fetch("http://localhost:3001/api/products");
+				const res = await fetch("https://petco.onrender.com/api/v1/products/");
 				const data = await res.json();
 				setProducts(data.products);
 			} catch (error) {

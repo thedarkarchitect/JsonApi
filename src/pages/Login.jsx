@@ -5,7 +5,7 @@ const Login = () => {
 	const loginUser = async (user) => {
 		try {
 			console.log(user);
-			await fetch("http://localhost:3001/api/auth/login", {
+			await fetch("https://petco.onrender.com/api/v1/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

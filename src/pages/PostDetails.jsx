@@ -9,7 +9,7 @@ const PostDetails = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/posts/${id}`);
+                const response = await fetch(`https://petco.onrender.com/api/v1/posts/${id}`);
  
                 const data = await response.json();
                 setPost(data.post);

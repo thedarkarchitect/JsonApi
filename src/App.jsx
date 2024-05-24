@@ -12,6 +12,8 @@ import PostDetails from "./pages/PostDetails";
 import Home from "./pages/Home";
 import "../src/App.css";
 import ProductUpload from "./pages/ProductUpload";
+import MainLayout from "./layout/MainLayout";
+import ProductDetails from "./components/ProductDetails";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -22,24 +24,19 @@ const router = createBrowserRouter(
 				<Route path="/auth/Login" element={<Login />} />
 			</Route>
 
-			<Route path="/">
-				<Route index element={<Home />}/>
-				
-			</Route>
+			<Route path="/" element={<MainLayout />}>
+				<Route index element={<Home />} />
 
-			<Route path="/products">
-				<Route path="/products/createProduct" element={<ProductUpload />}/>
-				
-			</Route>
+				<Route path="/products">
+					<Route path="/products/createProduct" element={<ProductUpload />} />
+					<Route path="/products/:id" element={<ProductDetails />} />
+				</Route>
 
-			{/* Home Page Routes */}
-			<Route path="/posts">
-				<Route path="/posts/createPost" element={<PostUpload />} />
-				<Route path="/posts/blog" element={<Posts />} />
-				<Route
-					path="/posts/blog/:id"
-					element={<PostDetails />}
-				/>
+				<Route path="/posts">
+					<Route path="/posts/createPost" element={<PostUpload />} />
+					<Route path="/posts/blog" element={<Posts />} />
+					<Route path="/posts/blog/:id" element={<PostDetails />} />
+				</Route>
 			</Route>
 		</>
 	)
