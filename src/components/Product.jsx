@@ -3,16 +3,18 @@ import { Link } from "react-router-dom";
 
 const Product = ({id, image, price, name}) => {
 	return (
-		<div className=''>
-			<Link  to={`/products/${id}`}>
-				<div className="px-4 product-card border border-yellow-400 hover:border-yellow-100 rounded-lg w-32">
+		<div className='relative product-card border border-yellow-400 hover:border-yellow-100 flex flex-col rounded-lg w-32'>
+			<Link className="px-4 pt-4" to={`/products/${id}`}>
+				<div className="flex max-h-20 justify-center overflow-hidden">
 					<img
 						src={image}
-						width={150}
-						height={150}
-						className="product-image"
+						className=""
+						// className="product-image"
 					/>
-                    <p className="text-sm">{name}</p>
+				</div>
+
+				<div>
+					<p className="text-sm pt-4">{name}</p>
                     <p className="text-sm text-black font-bold">{price}</p>
 				</div>
 				
