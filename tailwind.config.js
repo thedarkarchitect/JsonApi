@@ -11,6 +11,7 @@ export default {
     extend: {
       colors: {
         'customYellow': '#FFD000',
+        'yellow1': '#ffe97f',
         'red': '#c30010'
       },
     },

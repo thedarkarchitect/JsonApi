@@ -39,7 +39,7 @@ const Footer = () => {
 					</div>
 				</div>
 
-				<div classNameName="flex justify-center">
+				<div className="flex justify-center">
 					<p className="text-center">&copy; 2024 PetCo All rights reserved</p>
 					{/* <p classNameName="icons place-contents-center">
 						<AiFillAmazonSquare />
