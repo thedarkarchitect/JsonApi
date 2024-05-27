@@ -9,6 +9,14 @@ const ProductDetails = () => {
 	const [product, setProduct] = useState();
 	const [count, setCount] = useState(0);
 
+	const increment = () => {
+		setCount(count + 1);
+	}
+
+	const decrement = () => {
+		setCount(count - 1)
+	}
+
 	useEffect(() => {
 		const fetchProduct = async () => {
 			try {
@@ -60,7 +68,7 @@ const ProductDetails = () => {
 
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-8">
 								<div className="flex sm:items-center sm:justify-center w-full">
-									<button className="group py-4 px-6 border border-yellow-400 rounded-l-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
+									<button onClick={decrement} className="group py-4 px-6 border border-yellow-400 rounded-l-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
 										<svg
 											className="stroke-gray-900 group-hover:stroke-black"
 											width="22"
@@ -90,14 +98,11 @@ const ProductDetails = () => {
 											/>
 										</svg>
 									</button>
-									<input
+									<p
 										type="text"
 										className="font-semibold text-yellow-500 cursor-pointer text-lg py-[13px] px-6 w-full sm:max-w-[118px] outline-0 border-y border-yellow-400 bg-transparent placeholder:text-gray-900 text-center hover:bg-yellow-400"
-										placeholder="1"
-										value={count}
-										onChange={ (e) => setCount(e.target.value) }
-									/>
-									<button className="group py-4 px-6 border border-yellow-400 rounded-r-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
+									>{ count }</p>
+									<button onClick={increment} className="group py-4 px-6 border border-yellow-400 rounded-r-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
 										<svg
 											className="stroke-gray-900 group-hover:stroke-black"
 											width="22"

@@ -11,7 +11,7 @@ const Home = () => {
 					<h2>Best Selling Products</h2>
 					<p>Products of many variations</p>
 				</div>
-       
+
 				<div className="flex items-center justify-center min-h-screen-lg">
 					<Products />
 				</div>

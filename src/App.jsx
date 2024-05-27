@@ -14,6 +14,7 @@ import "../src/App.css";
 import ProductUpload from "./pages/ProductUpload";
 import MainLayout from "./layout/MainLayout";
 import ProductDetails from "./components/ProductDetails";
+import Service from "./pages/Service";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -36,6 +37,10 @@ const router = createBrowserRouter(
 					<Route path="/posts/createPost" element={<PostUpload />} />
 					<Route path="/posts/blog" element={<Posts />} />
 					<Route path="/posts/blog/:id" element={<PostDetails />} />
+				</Route>
+
+				<Route path="/service">
+					<Route path="/service" element={<Service />} />
 				</Route>
 			</Route>
 		</>
