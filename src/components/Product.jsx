@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const Product = ({id, image, price, name}) => {
 	return (
-		<div className='relative product-card border border-yellow-400 hover:border-yellow-100 flex flex-col rounded-lg w-32'>
+		<div className='relative product-card border border-yellow-400 hover:border-yellow-100 flex flex-col rounded-lg w-[150px] h-[250px]'>
 			<Link className="px-4 pt-4" to={`/products/${id}`}>
-				<div className="flex max-h-20 justify-center overflow-hidden">
+				<div className="flex max-h-[170px] justify-center overflow-hidden">
 					<img
 						src={image}
 						className=""
@@ -13,8 +13,9 @@ const Product = ({id, image, price, name}) => {
 					/>
 				</div>
 
-				<div>
-					<p className="text-sm pt-4">{name}</p>
+				<div className="items-end">
+				{/* truncate whitespace-nowrap overflow-hidden text-ellipsis */}
+					<p className="text-sm pt-4 truncate">{name}</p>
                     <p className="text-sm text-black font-bold">{price}</p>
 				</div>
 				

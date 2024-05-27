@@ -19,8 +19,8 @@ const Products = () => {
 	}, []);
 
 	return (
-		<div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4">
-			{products.map((products) => (
+		<div className="grid lg:grid-cols-6 md:grid-cols-2 sm:grid-cols-1 gap-6">
+			{/* {products.map((products) => (
 				<Product
 					key={products.id}
 					id={products.id}
@@ -28,7 +28,14 @@ const Products = () => {
 					price={products.price}
 					name={products.name}
 				/>
-			))}
+			))} */}
+			<Product 
+				key={products[6].id}
+				id={products[6].id}
+				image={products[0].imageUrl}
+				price={products[6].price}
+				name={products[6].name}
+			/>
 		</div>
 	);
 };
