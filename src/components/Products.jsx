@@ -4,6 +4,12 @@ import Product from "./Product";
 const Products = () => {
 	const [products, setProducts] = useState([]);
 
+	const getRandomProducts = (products) => {
+		return products.sort(() => 0.5 - Math.random()).slice(0, 12);
+	};
+
+	const randomProducts = getRandomProducts(products);
+
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
@@ -20,7 +26,7 @@ const Products = () => {
 
 	return (
 		<div className="grid lg:grid-cols-6 md:grid-cols-2 sm:grid-cols-1 gap-6 ">
-			{products.map((products) => (
+			{randomProducts.map((products) => (
 				<Product
 					key={products.id}
 					id={products.id}
@@ -29,13 +35,6 @@ const Products = () => {
 					name={products.name}
 				/>
 			))}
-			{/* <Product 
-				key={products[6].id}
-				id={products[6].id}
-				image={products[0].imageUrl}
-				price={products[6].price}
-				name={products[6].name}
-			/> */}
 		</div>
 	);
 };

@@ -41,17 +41,12 @@ const Footer = () => {
 
 				<div className="flex justify-center">
 					<p className="text-center">&copy; 2024 PetCo All rights reserved</p>
-					{/* <p classNameName="icons place-contents-center">
-						<AiFillAmazonSquare />
-						<AiFillInstagram />
-						<AiFillLinkedin />
-					</p> */}
 				</div>
 
 				<div className="mt-10 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-400">
 					<p className="order-2 md:order-1 mt-8 md:mt-0"> Kampala, Uganda </p>
 					<div className="order-1 md:order-2">
-						<Link to="#" className="px-2">About us</Link>
+						<Link to="/about" className="px-2">About us</Link>
 						<Link to="#" className="px-2 border-l">Contact us</Link>
 						<Link to="#" className="px-2 border-l">Privacy Policy</Link>
 					</div>

@@ -30,8 +30,13 @@ const ProductForm = ({ productSubmit }) => {
 			quantity,
 			imageUrl,
 		};
-
-		console.log(newProduct);
+		setName("")
+		setDescription("")
+		setCategory("")
+		setPrice("")
+		setQuantity("")
+		setImageUrl("")
+		
 		return productSubmit(newProduct);
 	};
 

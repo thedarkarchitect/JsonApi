@@ -12,6 +12,7 @@ const ProductUpload = () => {
 				},
 				body: JSON.stringify(newProduct),
 			});
+			
 			alert("Post created Successfully!");
 		} catch (error) {
 			console.log("Error", error);

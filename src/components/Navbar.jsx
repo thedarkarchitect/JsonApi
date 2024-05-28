@@ -24,9 +24,9 @@ const Navbar = () => {
 							</button>
 						</div>
 						<div className="flex-1 flex items-center justify-center">
-							<div className="flex-shrink-0">
+							<Link to="/" className="flex-shrink-0">
 								<img src="./src/assets/aqua logo1.png" />
-							</div>
+							</Link>
 						</div>
 						<div className="absolute inset-y-0 right-0 flex items-center pr-2">
 							<FiShoppingCart className="text-white text-2xl" />
@@ -54,7 +54,7 @@ const Navbar = () => {
 									</Link>
 								</li>
 								<li className="text-gray-800 text-lg">
-									<Link to="/products" onClick={toggleDrawer}>
+									<Link to="/products/shop" onClick={toggleDrawer}>
 										Shop
 									</Link>
 								</li>
@@ -64,7 +64,7 @@ const Navbar = () => {
 									</Link>
 								</li>
 								<li className="text-gray-800 text-lg">
-									<Link to="#" onClick={toggleDrawer}>
+									<Link to="/about" onClick={toggleDrawer}>
 										About us
 									</Link>
 								</li>

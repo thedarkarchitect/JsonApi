@@ -27,12 +27,12 @@ const PostDetails = () => {
         <div>
             <img className="p-32 md:p-16 sm:p-8 w-full  object-cover lg:rounded " src={post.imageUrl} alt="pic"/>
             <div className="px-4 lg:px-0">
-                <h2 class="py-4 px-16 text-4xl font-semibold text-gray-800 leading-tight">
+                <h2 className="py-4 px-16 text-4xl font-semibold text-gray-800 leading-tight">
                     {post.title}
                 </h2>
             </div>
-            <div class="justify-center px-16 mt-12 text-gray-700 text-lg leading-relaxed w-full lg:w-3/4">
-                <p class="pb-12">
+            <div className="justify-center px-16 mt-12 text-gray-700 text-lg leading-relaxed w-full lg:w-3/4">
+                <p className="pb-12">
                     {post.content}
                 </p>
             </div>

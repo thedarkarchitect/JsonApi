@@ -21,9 +21,15 @@ const PostCards = () => {
 	return (
 		<div className="grid gap-4 md:gap-6 sm:grid-cols-1 lg:grid-cols-2">
 			{posts.map((post) => (
-                <div className="py-6">
-                    <PostCard className="py-4" key={post.id} image={post.imageUrl} title={post.title} content={post.content} />
-                </div>
+				
+					<PostCard
+						
+						key={post.id}
+						id={post.id}
+						image={post.imageUrl}
+						title={post.title}
+						content={post.content}
+					/>
 				
 			))}
 		</div>
