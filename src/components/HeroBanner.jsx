@@ -28,8 +28,8 @@ const HeroBanner = () => {
 	};
 
 	return (
-			<div className="relative">
-				{/* <div className="flex w-full h-[800px] overflow-x-hidden transition-transform duration-1000">
+		<div className="relative">
+			{/* <div className="flex w-full h-[800px] overflow-x-hidden transition-transform duration-1000">
           {
             images.map((image, index) => (
               <div
@@ -46,9 +46,8 @@ const HeroBanner = () => {
             ))
           }
         </div> */}
-				<img className="w-full h-[750px]" src={hero2} />
-			</div>
-		
+			<img className="w-full h-[750px]" src={hero2} />
+		</div>
 	);
 };
 

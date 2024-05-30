@@ -10,7 +10,7 @@ const AboutUs = () => {
 			<section className="text-center py-12 px-4">
 				<h2 className="text-2xl font-bold">Mission</h2>
 				<p className="mt-4 text-gray-700 max-w-2xl mx-auto">
-					At<span classNameName="font-bold"> PetCo. </span>, our mission is to
+					At<span className="font-bold"> PetCo. </span>, our mission is to
 					enhance the lives of pets and their owners by providing exceptional
 					care, support, and resources. We strive to create a nurturing
 					environment where pets can thrive and owners can feel confident in the

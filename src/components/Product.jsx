@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+import { IoMdCart } from "react-icons/io";
+import { jwtDecode } from "jwt-decode";
 
 const Product = ({ id, image, price, name }) => {
+	const [wishList, setWishlist] = useState([]);
+	const [ownerId, setOwnerId] = useState(0);
+
+	const isLogged = localStorage.getItem("token");
+
 	const truncateString = (str, maxLength) => {
 		if (str.length <= maxLength) {
 			return str;
@@ -10,44 +17,84 @@ const Product = ({ id, image, price, name }) => {
 		return str.slice(0, maxLength) + "...";
 	};
 
+	useEffect(() => {
+		if (isLogged) {
+			const userId = jwtDecode(isLogged);
+			setOwnerId(userId.userid);
+			console.log(userId.userid);
+
+			const fetchWishlist = async () => {
+				try {
+					const response = await fetch(
+						`https://petco.onrender.com/api/v1/wishlist/get-user-wishlist/${userId.userid}`
+					);
+					const data = await response.json();
+					console.log(data);
+					setWishlist(data.wishList || []);
+				} catch (error) {
+					console.log(error);
+					// alert("Failed to Fetch Wishlist")
+				}
+			};
+
+			fetchWishlist();
+		}
+	}, [isLogged]);
+
+	const addToWishlist = async (productId) => {
+		try {
+			const wishlistItem = { userId: ownerId, productId };
+			const response = await fetch(
+				"https://petco.onrender.com/api/v1/wishlist/add-to-wishList",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(wishlistItem), //wishlistItem has ownerId, productId
+				}
+			);
+			if(!response.ok){
+				alert("Already in Wishlist!")
+			}
+		} catch (error) {
+			console.log(error);
+			alert("Failed to add to Wishlist");
+		}
+	};
+
+	const checkWishlistItem = (items, itemId) => {
+		return items.some((item) => item.id === itemId);
+	};
+
 	return (
-		// <div className="product-card border border-yellow-400 hover:border-yellow-[5px] rounded-lg w-[150px] h-[250px] shadow-2xl">
-		// 	<Link className="" to={`/products/${id}`}>
-		// 		<div className="flex max-h-[170px] justify-center overflow-hidden object-scale-down p-2">
-		// 			<img src={image} className="product-image" />
-
-		// 			<div  className="absolute bottom-14 ">
-		// 				<button className="p-2 rounded-full shadow-lg">
-		// 					<FaShoppingCart className="text-customYellow" />
-		// 				</button>
-		// 				<button className="p-2 rounded-full shadow-lg ">
-		// 					<FaHeart className="text-customYellow" />
-		// 				</button>
-		// 			</div>
-		// 		</div>
-
-		// 		<div className="absolute bottom-0">
-		// 			<p className="text-md font-semibold pt-2 ps-2 overflow-x-hidden truncate">
-		// 				{truncateString(name, 17)}
-		// 			</p>
-		// 			<p className="text-md text-black ps-2 pb-2  font-extrabold">
-		// 				{price} UGX
-		// 			</p>
-		// 		</div>
-		// 	</Link>
-		// </div>
 		<div className="relative product-card border border-yellow-400 hover:border-yellow-500 rounded-lg w-[150px] h-[250px] shadow-2xl group">
 			<Link to={`/products/${id}`}>
 				<div className="flex justify-center overflow-hidden p-2 h-[170px] relative">
 					<img src={image} alt={name} className="object-contain" />
-					<div className="absolute bottom-11 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-						<button className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-							<FaShoppingCart className="text-customYellow" />
-						</button>
-						<button className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-							<FaHeart className="text-customYellow" />
-						</button>
-					</div>
+					{isLogged ? (
+						<div className="absolute bottom-11 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+							<button className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+								<IoMdCart className="text-customYellow" />
+							</button>
+							<button
+								onClick={(e) => {
+									e.preventDefault();
+									addToWishlist(id);
+								}}
+								className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+								<FaHeart
+									className={
+										checkWishlistItem(wishList, id)
+											? "text-red"
+											: "text-customYellow"
+									}
+								/>
+							</button>
+						</div>
+					) : (
+						<div></div>
+					)}
 				</div>
 				<div className="absolute bottom-0 w-full bg-white bg-opacity-75 p-2 rounded-b-lg">
 					<p className="text-md font-semibold overflow-x-hidden truncate">

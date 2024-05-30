@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { AiOutlineShopping } from "react-icons/ai";
+import { IoMdCart } from "react-icons/io"
 import { Link } from "react-router-dom";
-import { FiShoppingCart } from "react-icons/fi";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useAuth } from "../AuthProvider";
 
 const Navbar = () => {
+	const { logout } = useAuth();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const isLogged = localStorage.getItem("token");
 
 	const toggleDrawer = () => {
 		setIsDrawerOpen(!isDrawerOpen);
@@ -28,9 +30,10 @@ const Navbar = () => {
 								<img src="./src/assets/aqua logo1.png" />
 							</Link>
 						</div>
-						<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-							<FiShoppingCart className="text-white text-2xl" />
-						</div>
+						<button type="button" className="items-center pr-2 cart-icon" >
+							<IoMdCart className="text-white" />
+							<span className="cart-item-qty" >1</span>
+						</button>
 					</div>
 				</div>
 				{isDrawerOpen && (
@@ -64,15 +67,33 @@ const Navbar = () => {
 									</Link>
 								</li>
 								<li className="text-gray-800 text-lg">
+									<Link to="/wishlist" onClick={toggleDrawer}>
+										Wishlist
+									</Link>
+								</li>
+								<li className="text-gray-800 text-lg">
 									<Link to="/about" onClick={toggleDrawer}>
 										About us
 									</Link>
 								</li>
-								<li className="text-gray-800 text-lg">
-									<Link to="/auth/SignUp" onClick={toggleDrawer}>
-										Sign up
-									</Link>
-								</li>
+
+								{isLogged ? (
+									<li className="text-gray-800 text-lg">
+										<button
+											onClick={() => {
+												logout();
+												toggleDrawer();
+											}}>
+											Logout
+										</button>
+									</li>
+								) : (
+									<li className="text-gray-800 text-lg">
+										<Link to="/auth/login" onClick={toggleDrawer}>
+											Login
+										</Link>
+									</li>
+								)}
 							</ul>
 						</div>
 					</div>

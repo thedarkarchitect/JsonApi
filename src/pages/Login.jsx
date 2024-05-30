@@ -1,22 +1,13 @@
 import LoginForm from "../components/LoginForm";
 import loginPic from "../assets/login.jpg";
+import { useAuth } from "../AuthProvider";
 
 const Login = () => {
+
+	const auth = useAuth();
+
 	const loginUser = async (user) => {
-		try {
-			console.log(user);
-			await fetch("https://petco.onrender.com/api/v1/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(user),
-			});
-			alert("User logged in Successfully!");
-		} catch (error) {
-			console.log("Error", error);
-			alert(" Failed to login user, try again ");
-		}
+		auth.loginAction(user)
 	};
 
 	return (

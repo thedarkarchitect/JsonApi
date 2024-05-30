@@ -82,15 +82,7 @@ const ProductForm = ({ productSubmit }) => {
 										Category <span className="text-red-500">*</span>
 									</label>
 									<br />
-									{/* <input
-										type="text"
-										className="border-2 rounded-lg border-gray-300 p-2 w-full"
-										name="category"
-										id="category"
-										value={ category }
-                                        onChange={ (e) => setCategory(e.target.value) }
-										required
-									/> */}
+									
 									<select
 										id="category"
 										name="category"
