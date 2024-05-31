@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useStateContext } from "../StateContext";
+
 
 const ProductDetails = () => {
 	const { id } = useParams();
 	const [loading, setLoading] = useState(true);
 	const [product, setProduct] = useState();
-	const [count, setCount] = useState(0);
+	const { decrement, increment, quantity } = useStateContext();
 
-	const increment = () => {
-		setCount(count + 1);
-	}
-
-	const decrement = () => {
-		setCount(count - 1)
-	}
 
 	useEffect(() => {
 		const fetchProduct = async () => {
@@ -99,7 +94,7 @@ const ProductDetails = () => {
 									<p
 										type="text"
 										className="font-semibold text-yellow-500 cursor-pointer text-lg py-[13px] px-6 w-full sm:max-w-[118px] outline-0 border-y border-yellow-400 bg-transparent placeholder:text-gray-900 text-center hover:bg-yellow-400"
-									>{ count }</p>
+									>{ quantity }</p>
 									<button onClick={increment} className="group py-4 px-6 border border-yellow-400 rounded-r-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
 										<svg
 											className="stroke-gray-900 group-hover:stroke-black"

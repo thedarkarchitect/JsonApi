@@ -54,12 +54,7 @@ const Shop = () => {
 					{currentProducts.map((product) => (
 						<Product
 							key={product.id}
-							id={product.id}
-							image={product.imageUrl}
-							price={product.price}
-							name={product.name}
-							// isWishlist={wishlist.includes(product.id)}
-							// toggleWishlist={toggleWishlist}
+							item={product}
 						/>
 					))}
 				</div>

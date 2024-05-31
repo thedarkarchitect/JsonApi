@@ -26,13 +26,10 @@ const Products = () => {
 
 	return (
 		<div className="grid lg:grid-cols-6 md:grid-cols-2 sm:grid-cols-1 gap-6 ">
-			{randomProducts.map((products) => (
+			{randomProducts.map((item) => (
 				<Product
-					key={products.id}
-					id={products.id}
-					image={products.imageUrl}
-					price={products.price}
-					name={products.name}
+					key={item.id}
+					item = {item}
 				/>
 			))}
 		</div>

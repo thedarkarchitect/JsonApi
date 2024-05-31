@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
+import { useStateContext } from "../StateContext";
 
-const Product = ({ id, image, price, name }) => {
+const Product = ({ item }) => {
+	const { onAddToCart, cartItems } = useStateContext();
 	const [wishList, setWishlist] = useState([]);
 	const [ownerId, setOwnerId] = useState(0);
 
@@ -54,8 +56,8 @@ const Product = ({ id, image, price, name }) => {
 					body: JSON.stringify(wishlistItem), //wishlistItem has ownerId, productId
 				}
 			);
-			if(!response.ok){
-				alert("Already in Wishlist!")
+			if (!response.ok) {
+				alert("Already in Wishlist!");
 			}
 		} catch (error) {
 			console.log(error);
@@ -63,29 +65,35 @@ const Product = ({ id, image, price, name }) => {
 		}
 	};
 
-	const checkWishlistItem = (items, itemId) => {
-		return items.some((item) => item.id === itemId);
+	const checkWishlistItem = (wishlistItems, wishlistItemId) => {
+		return wishlistItems.some((product) => product.id === wishlistItemId);
 	};
 
 	return (
 		<div className="relative product-card border border-yellow-400 hover:border-yellow-500 rounded-lg w-[150px] h-[250px] shadow-2xl group">
-			<Link to={`/products/${id}`}>
+			<Link to={`/products/${item.id}`}>
 				<div className="flex justify-center overflow-hidden p-2 h-[170px] relative">
-					<img src={image} alt={name} className="object-contain" />
+					<img src={item.imageUrl} alt={item.name} className="object-contain" />
 					{isLogged ? (
 						<div className="absolute bottom-11 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-							<button className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+							<button
+								onClick={(e) => {
+									e.preventDefault();
+									onAddToCart(item, 1);
+									console.log(cartItems)
+								}}
+								className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
 								<IoMdCart className="text-customYellow" />
 							</button>
 							<button
 								onClick={(e) => {
 									e.preventDefault();
-									addToWishlist(id);
+									addToWishlist(item.id);
 								}}
 								className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
 								<FaHeart
 									className={
-										checkWishlistItem(wishList, id)
+										checkWishlistItem(wishList, item.id)
 											? "text-red"
 											: "text-customYellow"
 									}
@@ -98,9 +106,9 @@ const Product = ({ id, image, price, name }) => {
 				</div>
 				<div className="absolute bottom-0 w-full bg-white bg-opacity-75 p-2 rounded-b-lg">
 					<p className="text-md font-semibold overflow-x-hidden truncate">
-						{truncateString(name, 17)}
+						{truncateString(item.name, 17)}
 					</p>
-					<p className="text-md text-black font-extrabold">{price} UGX</p>
+					<p className="text-md text-black font-extrabold">{item.price} UGX</p>
 				</div>
 			</Link>
 		</div>
