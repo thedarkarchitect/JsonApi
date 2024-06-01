@@ -10,7 +10,6 @@ const Wishlist = () => {
 	useEffect(() => {
 		if (isLogged) {
 			const userId = jwtDecode(isLogged);
-			console.log(userId.userid);
             setOwnerId(userId.userid)
 
 			const fetchWishlist = async () => {
@@ -33,7 +32,7 @@ const Wishlist = () => {
 	return (
 		<div className="grid gap-4 sm:grid-cols-1 sm:justify-center sm:p-12 md:grid-cols-2 lg:grid-row-3 xl:grid-row-4">
 			{wishlist.map((items) => (
-				<div key={items.id} className="">
+				<div key={items.id} className="p-12">
 					<WishlistCard
 						id={items.id}
 						productId={items.productId}

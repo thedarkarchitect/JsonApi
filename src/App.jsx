@@ -25,46 +25,44 @@ const App = () => {
 				<StateContext>
 					<Routes>
 						{/* Auth Routes */}
-						<Route path="/auth">
 							<Route path="/auth/SignUp" element={<SignUp />} />
 							<Route path="/auth/Login" element={<Login />} />
-						</Route>
 
 						{/* MainLayout */}
 						<Route path="/" element={<MainLayout />}>
 							<Route index element={<Home />} />
 
 							{/* products routes */}
-							<Route path="/products" element={<PrivateRoute />}>
+							<Route path="products" element={<PrivateRoute />}>
 								<Route
-									path="/products/createProduct"
+									path="createProduct"
 									element={<ProductUpload />}
 								/>{" "}
 								//Reminder: protect to the role Admin after securing other
 								routes
-								<Route path="/products/:id" element={<ProductDetails />} />
-								<Route path="/products/shop" element={<Shop />} />
+								<Route path=":id" element={<ProductDetails />} />
+								<Route path="shop" element={<Shop />} />
 							</Route>
 
 							{/* posts routes */}
-							<Route path="/posts">
-								<Route path="/posts/createPost" element={<PostUpload />} />
-								<Route path="/posts/blog" element={<Posts />} />
-								<Route path="/posts/blog/:id" element={<PostDetails />} />
+							<Route path="">
+								<Route path="createPost" element={<PostUpload />} />
+								<Route path="blog" element={<Posts />} />
+								<Route path="blog/:id" element={<PostDetails />} />
 							</Route>
 
 							{/* service routes */}
-							<Route path="/service" element={<PrivateRoute />}>
+							<Route path="service" element={<PrivateRoute />}>
 								<Route index element={<Service />} />
 							</Route>
 
 							{/* wishlist routes */}
-							<Route path="/wishlist">
+							<Route path="/wishlist" element={<PrivateRoute />}>
 								<Route index element={<Wishlist />} />
 							</Route>
 
 							{/* about routes */}
-							<Route path="/about" element={<AboutUs />} />
+							<Route path="about" element={<AboutUs />} />
 						</Route>
 					</Routes>
 				</StateContext>

@@ -1,16 +1,15 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-	const [user, setUser] = useState(null);
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 	const [token, setToken] = useState(localStorage.getItem("token") || "");
 	const navigate = useNavigate();
 
 	const loginAction = async (userData) => {
 		try {
-			console.log(userData);
 			const response = await fetch(
 				"https://petco.onrender.com/api/v1/auth/login",
 				{
@@ -26,11 +25,10 @@ const AuthProvider = ({ children }) => {
 			if (res) {
 				setUser(res.user);
 				setToken(res.token);
-				localStorage.setItem("user", JSON.stringify(res.user))
+				localStorage.setItem("user", JSON.stringify(res.user));
 				localStorage.setItem("token", res.token);
 				alert("User logged in Successfully!");
 				navigate("/");
-				return;
 			}
 		} catch (error) {
 			console.log("Error", error);
@@ -41,7 +39,7 @@ const AuthProvider = ({ children }) => {
 	const logout = () => {
 		setUser(null);
 		setToken("");
-		localStorage.removeItem("user")
+		localStorage.removeItem("user");
 		localStorage.removeItem("token");
 		navigate("/");
 	};

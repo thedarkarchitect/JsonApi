@@ -4,7 +4,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { IoMdCart } from "react-icons/io";
 
-const WishlistCard = ({ id, productId, ownerId }) => {
+const WishlistCard = ({ id, productId }) => {
 	const [product, setProduct] = useState([]);
 
     const truncateString = (name, maxLength) => {

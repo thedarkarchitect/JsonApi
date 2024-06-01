@@ -375,7 +375,7 @@ span.text-yellow {
 }
 .remove-item {
 	font-size: 24px;
-	color: #ffd000;
+	color: #ff0000ec;
 	cursor: pointer;
 	background: transparent;
 	border: none;

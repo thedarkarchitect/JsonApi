@@ -7,7 +7,7 @@ const ProductDetails = () => {
 	const { id } = useParams();
 	const [loading, setLoading] = useState(true);
 	const [product, setProduct] = useState();
-	const { decrement, increment, quantity } = useStateContext();
+	const { decrement, increment, quantity, onAddToCart } = useStateContext();
 
 
 	useEffect(() => {

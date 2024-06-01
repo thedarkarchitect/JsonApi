@@ -1,18 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import pet from "../assets/pet.jpg";
+import { jwtDecode } from "jwt-decode";
 
 const PetForm = () => {
+	const isLogged = localStorage.getItem("token")
 	const [name, setName] = useState("");
 	const [type, setType] = useState("Choose a Type");
 	const [breed, setBreed] = useState("");
 	const [age, setAge] = useState(0);
+	const [ownerId, setOwnerId] = useState(0)
+
+	useEffect(() => {
+		if (isLogged) {
+			const userId = jwtDecode(isLogged);
+			console.log(userId.userid);
+            setOwnerId(userId.userid)
+		}
+	}, [isLogged])
+	
+	const addPet = async (animal) => {
+		try {
+			const response = await fetch("https://petco.onrender.com/api/v1/pet/create-pet",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(animal)
+				}
+			)
+			
+			alert("Pet details entered Successfully");
+
+		} catch(error) {
+			console.log(error)
+			alert("Failed to add pet")
+		}
+	}
 
 	const postForm = (e) => {
 		e.preventDefault();
 
-		const pet = {};
+		const pet = {
+			name,
+			type,
+			breed,
+			age
+		};
 		console.log(pet);
-		// userlogged(user);
+		addPet({...pet, ownerId })
 
 		setName("");
 		setType("Choose a Type");
@@ -49,7 +85,7 @@ const PetForm = () => {
 								/>
 							</div>
 							<div className="py-4">
-								<span className="mb-2 text-md">Breed</span>
+								<span className="mb-2 text-md">Pet Type</span>
 								<select
 									id="type"
 									name="type"
