@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { useStateContext } from "../StateContext";
 
 const Product = ({ item }) => {
-	const { onAddToCart, cartItems } = useStateContext();
+	// const { onAddToCart, cartItems } = useStateContext();
 	const [wishList, setWishlist] = useState([]);
 	const [ownerId, setOwnerId] = useState(0);
 
@@ -23,7 +23,6 @@ const Product = ({ item }) => {
 		if (isLogged) {
 			const userId = jwtDecode(isLogged);
 			setOwnerId(userId.userid);
-			console.log(userId.userid);
 
 			const fetchWishlist = async () => {
 				try {
@@ -76,15 +75,12 @@ const Product = ({ item }) => {
 					<img src={item.imageUrl} alt={item.name} className="object-contain" />
 					{isLogged ? (
 						<div className="absolute bottom-11 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-							<button
-								onClick={(e) => {
-									e.preventDefault();
-									onAddToCart(item, 1);
-									console.log(cartItems)
-								}}
-								className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+							<Link to={`/products/${item.id}`}>
+							<button className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
 								<IoMdCart className="text-customYellow" />
 							</button>
+							</Link>
+							
 							<button
 								onClick={(e) => {
 									e.preventDefault();

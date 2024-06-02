@@ -9,7 +9,7 @@ import Cart from "./Cart";
 
 const Navbar = () => {
 	const { logout } = useAuth();
-	const { showCart, setShowCart, totalQuantities } = useStateContext();
+	const { showCart, setShowCart, totalItems } = useStateContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const isLogged = localStorage.getItem("token");
 
@@ -36,7 +36,7 @@ const Navbar = () => {
 						</div>
 						<button type="button" onClick={() => {if(!showCart){setShowCart(true) } else {setShowCart(false)}}} className="items-center pr-2 cart-icon">
 							<IoMdCart className="text-white" />
-							<span className="cart-item-qty">{totalQuantities}</span>
+							<span className="cart-item-qty">{totalItems}</span>
 						</button>
 						{ showCart && <Cart />}
 					</div>
