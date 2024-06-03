@@ -26,10 +26,9 @@ const Navbar = () => {
 	console.log(cartItems)
 
 	useEffect(() => {
-		const fetchOrder = async () => {
-			const userId = isLogged ? jwtDecode(isLogged).userid : null;
-			if (!userId) return;
+		const userId = isLogged ? jwtDecode(isLogged).userid : null;
 
+		const fetchOrder = async () => {
 			try {
 				const response = await fetch(`https://petco.onrender.com/api/v1/orders/get-users-order/${userId}`);
 				const data = await response.json();

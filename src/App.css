@@ -389,13 +389,13 @@ span.text-yellow {
 }
 
 .btn-container {
-	width: 400px;
+	width: 300px;
 	margin: auto;
 }
 .btn {
 	width: 100%;
-	max-width: 400px;
-	padding: 10px 12px;
+	max-width: 300px;
+	padding: 5px 5px;
 	border-radius: 50px;
 	border: none;
 	font-size: 20px;

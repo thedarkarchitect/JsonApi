@@ -27,7 +27,7 @@ const Wishlist = () => {
 
 			fetchWishlist();
 		}
-	}, [isLogged]);
+	}, []);
 
 	return (
 		<div className="grid gap-4 sm:grid-cols-1 sm:justify-center sm:p-12 md:grid-cols-2 lg:grid-row-3 xl:grid-row-4">

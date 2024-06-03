@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IoMdCart } from "react-icons/io";
-import {jwtDecode} from "jwt-decode"; // Assuming you have jwtDecode available for decoding JWT tokens
+import { jwtDecode } from "jwt-decode";
 
 const ProductDetails = () => {
 	const { id } = useParams();
 	const [loading, setLoading] = useState(true);
 	const [product, setProduct] = useState();
-	const [quantity, setQuantity] = useState(1); // Set initial quantity to 1
+	const [quantity, setQuantity] = useState(0);
 	const [orderId, setOrderId] = useState(null);
-	const [error, setError] = useState(null);
 
 	const isLogged = localStorage.getItem("token");
 
@@ -18,93 +17,102 @@ const ProductDetails = () => {
 	};
 
 	const decrement = () => {
-		setQuantity((prevQuantity) => (prevQuantity - 1 < 1 ? 1 : prevQuantity - 1));
-	};
-
-	const fetchProduct = async () => {
-		try {
-			const response = await fetch(
-				`https://petco.onrender.com/api/v1/products/${id}`
-			);
-			const data = await response.json();
-			setProduct(data.product);
-			setLoading(false);
-		} catch (error) {
-			console.log("Error fetching data", error);
-			setError("Error fetching product data");
-			setLoading(false);
-		}
-	};
-
-	const checkIfOrderExists = async (userId) => {
-		const data = {
-			userId,
-			products: [],
-			totalprice: 0,
-			isComplete: false,
-		};
-
-		try {
-			const orders = await fetch(
-				`https://petco.onrender.com/api/v1/orders/get-users-order/${userId}`
-			);
-			const userOrders = await orders.json();
-
-			if (userOrders && Array.isArray(userOrders.orders)) {
-				const inCompleteOrder = userOrders.orders.find(
-					(order) => !order.isComplete
-				);
-
-				if (inCompleteOrder) {
-					setOrderId(inCompleteOrder.id);
-				} else {
-					// No incomplete order found, create a new one
-					const response = await fetch(
-						"https://petco.onrender.com/api/v1/orders/createOrder",
-						{
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify(data),
-						}
-					);
-
-					if (!response.ok) {
-						throw new Error("Failed to create new order");
-					}
-
-					const newOrder = await response.json();
-					setOrderId(newOrder.id);
-				}
-			} else {
-				setError("Invalid data or orders not found");
-			}
-		} catch (error) {
-			console.log("Error checking order", error);
-			setError("Error checking order");
-		}
+		setQuantity((prevQuantity) => {
+			if (prevQuantity - 1 < 1) return 1;
+			return prevQuantity - 1;
+		});
 	};
 
 	useEffect(() => {
-		const userId = isLogged ? jwtDecode(isLogged).userid : null;
+        const userId = isLogged ? jwtDecode(isLogged).userid : null;
 
-		if (userId) {
-			checkIfOrderExists(userId);
-		}
+        const checkIfOrderExists = async (userId) => {
+            const data = {
+                userId,
+                products: [],
+                totalprice: 0,
+                isComplete: false,
+            };
 
-		fetchProduct();
-	}, []);
+            const orders = await fetch(
+                `https://petco.onrender.com/api/v1/orders/get-users-order/${userId}`
+            );
+            const userOrders = await orders.json();
+
+            if (userOrders && Array.isArray(userOrders.orders)) {
+                const inCompleteOrder = userOrders.orders.find(
+                    (order) => order.isComplete === false
+                );
+
+                if (inCompleteOrder) {
+                    setOrderId(inCompleteOrder.id);
+                } else {
+                    const response = await fetch(
+                        "https://petco.onrender.com/api/v1/orders/createOrder",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(data),
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Failed to post data");
+                    }
+
+                    const newOrder = await response.json();
+                    setOrderId(newOrder.id);
+                }
+            } else {
+                console.log("Invalid data or orders not found");
+            }
+        };
+
+        const fetchProduct = async () => {
+            try {
+                const response = await fetch(
+                    `https://petco.onrender.com/api/v1/products/${id}`
+                );
+
+                const data = await response.json();
+                setProduct(data.product);
+                setLoading(false);
+            } catch (error) {
+                console.log("Error fetching data", error);
+            }
+        };
+
+        if (loading) {
+            fetchProduct();
+            checkIfOrderExists(userId)
+        }
+    }, []);
 
 	const addProductToCart = async (product, quantity, orderId) => {
+		console.log(orderId)
 		try {
-			const orders = await fetch(`https://petco.onrender.com/api/v1/orders/get-order/${orderId}`);
-			const data = await orders.json();
-
-			const dataUpdate = {
-				products: [...data.order.products, { product, quantity }]
-			};
-
+			// Fetch the order details
+			const orderResponse = await fetch(`https://petco.onrender.com/api/v1/orders/get-order/${orderId}`);
+			const orderData = await orderResponse.json();
+			const order = orderData.order;
+	
+			// Check if the product already exists in the order
+			const existingProductIndex = order.products.findIndex(
+				(item) => item.product.id === product.id
+			);
+	
+			if (existingProductIndex !== -1) {
+				console.log("Product already exists in the order");
+				return; // Exit the function if product already exists
+			}
+	
+			// If product doesn't exist, add it to the order
+			const updatedProducts = [...order.products, { product, quantity }];
+			const dataUpdate = { products: updatedProducts };
+	
+			// Update the order with the new product
 			await fetch(`https://petco.onrender.com/api/v1/orders/${orderId}`, {
 				method: "PATCH",
 				headers: {
@@ -112,25 +120,25 @@ const ProductDetails = () => {
 				},
 				body: JSON.stringify(dataUpdate),
 			});
+	
+			console.log("Product added to cart successfully");
 		} catch (error) {
-			console.log(error);
-			setError("Error adding product to cart");
+			console.error("Error adding product to cart", error);
 		}
 	};
+	
 
 	if (loading) return <p>Loading...</p>;
-
-	if (error) return <p>{error}</p>;
 
 	return (
 		<section className="relative py-20 px-15">
 			<div className="w-full mx-auto px-4 sm:px-6 lg:px-0">
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mx-auto max-md:px-2">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mx-auto max-md:px-2 ">
 					<div className="img">
-						<div className="img-box h-full max-lg:mx-auto">
+						<div className="img-box h-full max-lg:mx-auto ">
 							<img
 								src={product.imageUrl}
-								alt="product"
+								alt="product image"
 								className="max-lg:mx-auto lg:ml-auto h-full"
 							/>
 						</div>
@@ -224,7 +232,8 @@ const ProductDetails = () => {
 									</button>
 								</div>
 								<button
-									onClick={() => {
+									onClick={(e) => {
+										e.preventDefault();
 										addProductToCart(product, quantity, orderId);
 									}}
 									className="group py-4 px-5 rounded-full bg-yellow-50 text-yellow-500 font-semibold text-lg w-full flex items-center justify-center gap-2 transition-all duration-500 hover:bg-yellow-200">
