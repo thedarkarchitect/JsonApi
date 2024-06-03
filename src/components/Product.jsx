@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
 import {jwtDecode} from "jwt-decode"; // Correct import statement
-// import { useStateContext } from "../StateContext"; // Assuming you have context for handling cart operations
 
 const Product = ({ item }) => {
-    // const { onAddToCart, cartItems } = useStateContext();
     const [wishList, setWishlist] = useState([]);
-    const [ownerId, setOwnerId] = useState(0); // Initially null to check user login status
+    const [ownerId, setOwnerId] = useState(0);
 
     const isLogged = localStorage.getItem("token");
 
@@ -18,7 +16,7 @@ const Product = ({ item }) => {
 
     useEffect(() => {
         if (isLogged) {
-            const { userid } = jwtDecode(isLogged); // Destructure directly to get userid
+            const { userid } = jwtDecode(isLogged);
             setOwnerId(userid);
 
             const fetchWishlist = async () => {
@@ -35,7 +33,7 @@ const Product = ({ item }) => {
 
             fetchWishlist();
         }
-    }, [isLogged]);
+    }, []);
 
     const addToWishlist = async (productId) => {
         if (!ownerId) {
@@ -68,10 +66,6 @@ const Product = ({ item }) => {
         }
     };
 
-    const checkWishlistItem = (wishlistItems, wishlistItemId) => {
-        return wishlistItems.some((product) => product.id === wishlistItemId);
-    };
-
     return (
         <div className="relative product-card border border-yellow-400 hover:border-yellow-500 rounded-lg w-[150px] h-[250px] shadow-2xl group">
             <Link to={`/products/${item.id}`}>
@@ -86,11 +80,11 @@ const Product = ({ item }) => {
                 <p className="text-md text-black font-extrabold">{item.price} UGX</p>
             </div>
             {isLogged && (
-                <div className="absolute bottom-11 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-11 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
                     <Link to={`/products/${item.id}`}>
-                        <button className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+                        <div className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
                             <IoMdCart className="text-customYellow" />
-                        </button>
+                        </div>
                     </Link>
                     <button
                         onClick={(e) => {
@@ -98,9 +92,7 @@ const Product = ({ item }) => {
                             addToWishlist(item.id);
                         }}
                         className="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-                        <FaHeart
-                            className="text-customYellow"
-                        />
+                        <FaHeart className="text-customYellow" />
                     </button>
                 </div>
             )}

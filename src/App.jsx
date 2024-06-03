@@ -17,6 +17,7 @@ import Wishlist from "./pages/Wishlist";
 import AuthProvider from "./AuthProvider";
 import PrivateRoute from "./PrivateRoute";
 import { StateContext } from "./StateContext";
+import Order from "./pages/Order";
 
 const App = () => {
 	return (
@@ -45,7 +46,7 @@ const App = () => {
 							</Route>
 
 							{/* posts routes */}
-							<Route path="">
+							<Route path="/posts">
 								<Route path="createPost" element={<PostUpload />} />
 								<Route path="blog" element={<Posts />} />
 								<Route path="blog/:id" element={<PostDetails />} />
@@ -56,8 +57,12 @@ const App = () => {
 								<Route index element={<Service />} />
 							</Route>
 
+							<Route path="order" element={<PrivateRoute />}>
+								<Route index element={<Order />}/>	
+							</Route>
+
 							{/* wishlist routes */}
-							<Route path="/wishlist" element={<PrivateRoute />}>
+							<Route path="wishlist" element={<PrivateRoute />}>
 								<Route index element={<Wishlist />} />
 							</Route>
 

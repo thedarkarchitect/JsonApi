@@ -25,7 +25,7 @@ const WishlistCard = ({ id, productId }) => {
         };
 
         fetchProductById();
-    }, [productId]);
+    }, []);
 
     const removeFromWishlist = async () => {
         try {

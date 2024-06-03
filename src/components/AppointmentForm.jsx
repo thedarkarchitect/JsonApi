@@ -33,7 +33,7 @@ const AppointmentForm = () => {
 
 			fetchPets();
 		}
-	}, [isLogged]);
+	}, []);
 
 	const addAppointment = async (petAppointment) => {
 		try {

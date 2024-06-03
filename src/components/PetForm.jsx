@@ -16,7 +16,7 @@ const PetForm = () => {
 			console.log(userId.userid);
             setOwnerId(userId.userid)
 		}
-	}, [isLogged])
+	}, [])
 	
 	const addPet = async (animal) => {
 		try {
