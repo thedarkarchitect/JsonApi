@@ -1,13 +1,99 @@
-import React from "react";
-import toast from "react-hot-toast";
+import React, { useEffect, useState } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IoMdCart } from "react-icons/io";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
-import { useStateContext } from "../StateContext";
+import { jwtDecode } from "jwt-decode"; // Assuming you have jwtDecode available for decoding JWT tokens
 
 const Cart = () => {
-    const { cartItems, showCart, setShowCart, increment, decrement, onRemove, totalPrice, totalItems } = useStateContext();
+    const [showCart, setShowCart] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [orderId, setOrderId] = useState(null);
+    const [quantity, setQuantity] = useState()
+    const [error, setError] = useState(null);
+
+    const isLogged = localStorage.getItem("token");
+
+    useEffect(() => {
+        const fetchOrder = async () => {
+            const userId = isLogged ? jwtDecode(isLogged).userid : null;
+            if (!userId) return;
+
+            try {
+                const response = await fetch(`https://petco.onrender.com/api/v1/orders/get-users-order/${userId}`);
+                const data = await response.json();
+                
+                if (data.orders && Array.isArray(data.orders)) {
+                    const incompleteOrder = data.orders.find(order => !order.isComplete);
+                    if (incompleteOrder) {
+                        setOrderId(incompleteOrder.id);
+                        fetchOrderItems(incompleteOrder.id);
+                    } else {
+                        createOrder(userId);
+                    }
+                } else {
+                    throw new Error("Invalid order data");
+                }
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        const fetchOrderItems = async (orderId) => {
+            try {
+                const response = await fetch(`https://petco.onrender.com/api/v1/orders/get-order/${orderId}`);
+                const orderData = await response.json();
+                setCartItems(orderData.order.products);
+                calculateTotalPrice(orderData.order.products);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        const createOrder = async (userId) => {
+            const data = {
+                userId,
+                products: [],
+                totalprice: 0,
+                isComplete: false,
+            };
+
+            try {
+                const response = await fetch("https://petco.onrender.com/api/v1/orders/createOrder", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to create order");
+                }
+
+                const newOrder = await response.json();
+                setOrderId(newOrder.id);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        const calculateTotalPrice = (items) => {
+            const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+            setTotalPrice(total);
+        };
+
+        fetchOrder();
+    }, [isLogged]);
+
+    const onRemove = (item) => {
+        // Handle item removal logic here
+    };
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div className="cart-wrapper">
@@ -15,13 +101,11 @@ const Cart = () => {
                 <button
                     type="button"
                     className="cart-heading"
-                    onClick={() => {
-                        setShowCart(!showCart);
-                    }}
+                    onClick={() => setShowCart(!showCart)}
                 >
                     <AiOutlineLeft className="font-bold text-2xl" />
                     <span className="heading">Your Cart</span>
-                    <span className="cart-num-items">({totalItems} items)</span>
+                    <span className="cart-num-items">({cartItems.length} items)</span>
                 </button>
 
                 <div className="columns-1 flex justify-center">
@@ -38,9 +122,9 @@ const Cart = () => {
                     )}
 
                     <div className="product-container">
-                        {cartItems.map((item) => (
+                        {cartItems.length >= 1 && cartItems.map((item) => (
                             <div className="product" key={item.product.id}>
-                                <img src={item.product.imageUrl} className="cart-product-image" />
+                                <img src={item.product.imageUrl} className="cart-product-image" alt={item.product.name} />
                                 <div className="">
                                     <div className="flex top">
                                         <h5 className="pr-16">{item.product.name}</h5>
@@ -88,7 +172,7 @@ const Cart = () => {
                                         onClick={() => setShowCart(false)}
                                         className="btn"
                                     >
-                                        Continue Shopping
+                                        create order
                                     </button>
                                 </Link>
                             </div>
