@@ -101,7 +101,7 @@ const Navbar = () => {
 									</Link>
 								</li>
 								<li className="text-gray-800 text-lg">
-									<Link to="/blog" onClick={toggleDrawer}>
+									<Link to="/posts/blog" onClick={toggleDrawer}>
 										Blog
 									</Link>
 								</li>
