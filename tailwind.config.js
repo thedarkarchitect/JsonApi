@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-import { require } from "esm";
+import flowbitePlugin from "flowbite/plugin"
 
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/preline/preline.js"
+    "./node_modules/preline/preline.js",
+    'node_modules/flowbite-react/lib/esm/**/*.js'
   ],
   theme: {
     extend: {
@@ -16,6 +17,8 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    flowbitePlugin
+  ],
 }
 
