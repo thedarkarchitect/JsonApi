@@ -38,9 +38,10 @@ const App = () => {
 								<Route
 									path="createProduct"
 									element={<ProductUpload />}
-								/>{" "}
-								//Reminder: protect to the role Admin after securing other
-								routes
+								/>
+							</Route>
+
+							<Route path="products">
 								<Route path=":id" element={<ProductDetails />} />
 								<Route path="shop" element={<Shop />} />
 							</Route>

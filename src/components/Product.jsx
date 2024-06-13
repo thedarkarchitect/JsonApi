@@ -67,7 +67,7 @@ const Product = ({ item }) => {
     };
 
     return (
-        <div className="relative product-card border border-yellow-400 hover:border-yellow-500 rounded-lg w-[150px] h-[250px] shadow-2xl group">
+        <div className="relative product-card border border-yellow-300 hover:border-yellow-400 rounded-lg w-[150px] h-[250px] shadow-2xl group">
             <Link to={`/products/${item.id}`}>
                 <div className="flex justify-center overflow-hidden p-2 h-[170px] relative">
                     <img src={item.imageUrl} alt={item.name} className="object-contain" />

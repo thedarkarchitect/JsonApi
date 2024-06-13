@@ -14,7 +14,7 @@ const MainLayout = () => {
 				<Navbar />
 			</header>
 			<main className=""><Outlet/></main>
-			<footer className="absolute bottom w-full">
+			<footer>
 				<Footer />
 			</footer>
 		</div>
