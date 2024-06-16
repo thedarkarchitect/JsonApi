@@ -5,16 +5,22 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Assuming you have jwtDecode available for decoding JWT tokens
 import { useStateContext } from "../StateContext";
+import { useSelector, useDispatch } from "react-redux";
+import { changeQuantity } from "../stores/cart";
 
 const Cart = () => {
 	const { showCart, setShowCart } = useStateContext();
-	const [cartItems, setCartItems] = useState([]);
+
+	const [product, setProduct] = useState([]);
+
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [orderId, setOrderId] = useState(null);
     const [ownerId, setOwnerId] = useState(null)
 	const [error, setError] = useState(null);
 
 	const isLogged = localStorage.getItem("token");
+	const carts = useSelector(store => store.cart.items);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 
@@ -56,24 +62,18 @@ const Cart = () => {
 		calculateTotalPrice(cartItems);
 	}, [cartItems]);
 
-	const increment = (itemId) => {
-		setCartItems((prevItems) =>
-			prevItems.map((item) =>
-				item.product.id === itemId
-					? { ...item, quantity: item.quantity + 1 }
-					: item
-			)
-		);
+	const increment = () => {
+		dispatch(changeQuantity({
+			product: product,
+			quantity: quantity + 1
+		}))
 	};
 
 	const decrement = (itemId) => {
-		setCartItems((prevItems) =>
-			prevItems.map((item) =>
-				item.product.id === itemId && item.quantity > 1
-					? { ...item, quantity: item.quantity - 1 }
-					: item
-			)
-		);
+		dispatch(changeQuantity({
+			product: product,
+			quantity: quantity - 1
+		}))
 	};
 
 	const calculateTotalPrice = (items) => {
@@ -120,10 +120,10 @@ const Cart = () => {
 					onClick={() => setShowCart(false)}>
 					<AiOutlineLeft className="font-bold text-2xl" />
 					<span className="heading">Your Cart</span>
-					<span className="cart-num-items">({cartItems.length} items)</span>
+					<span className="cart-num-items">({carts.length} items)</span>
 				</button>
 
-				{cartItems.length === 0 ? (
+				{carts.length === 0 ? (
 					<div className="empty-cart">
 						<IoMdCart size={200} />
 						<h3>Your Shopping cart is empty</h3>
@@ -138,7 +138,7 @@ const Cart = () => {
 					</div>
 				) : (
 					<div className="product-container">
-						{cartItems.map((item) => (
+						{carts.map((item) => (
 							<div className="product" key={item.product.id}>
 								<img
 									src={item.product.imageUrl}

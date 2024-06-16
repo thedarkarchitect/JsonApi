@@ -5,15 +5,21 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from "../AuthProvider";
 import { useStateContext } from "../StateContext";
 import Cart from "./Cart";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
 	const { logout } = useAuth();
-	const { showCart, setShowCart, totalItems } = useStateContext();
-	const [cartItems, setCartItems] = useState([]);
+	const { showCart, setShowCart } = useStateContext();
+	const [totalQuantity, setTotalQuantity] = useState(0);
+
+	// const [cartItems, setCartItems] = useState([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [error, setError] = useState(null);
+
+	// const [error, setError] = useState(null);
+	
 	const isLogged = localStorage.getItem("token");
+	const carts = useSelector(store => store.cart.items);
 
 	const toggleDrawer = () => {
 		setIsDrawerOpen(!isDrawerOpen);
@@ -23,45 +29,13 @@ const Navbar = () => {
 		setShowCart(!showCart);
 	};
 
-	console.log(cartItems)
-
 	useEffect(() => {
-		const userId = isLogged ? jwtDecode(isLogged).userid : null;
+		// const userId = isLogged ? jwtDecode(isLogged).userid : null;
+		let total = 0;
+		carts.forEach(item => total += item.quantity);
+		setTotalQuantity(total);
 
-		const fetchOrder = async () => {
-			try {
-				const response = await fetch(`https://petco.onrender.com/api/v1/orders/get-users-order/${userId}`);
-				const data = await response.json();
-
-				if (data.orders && Array.isArray(data.orders)) {
-					const incompleteOrder = data.orders.find(order => !order.isComplete);
-					if (incompleteOrder) {
-						fetchOrderItems(incompleteOrder.id);
-					} else {
-						createOrder(userId);
-					}
-				} else {
-					throw new Error("Invalid order data");
-				}
-			} catch (error) {
-				setError(error.message);
-			}
-		};
-
-		const fetchOrderItems = async (orderId) => {
-			try {
-				const response = await fetch(`https://petco.onrender.com/api/v1/orders/get-order/${orderId}`);
-				const orderData = await response.json();
-				setCartItems(orderData.order.products);
-			} catch (error) {
-				setError(error.message);
-			}
-		};
-
-		if (isLogged) {
-			fetchOrder();
-		}
-	}, []);
+	}, [carts]);
 
 	return (
 		<div>
@@ -69,7 +43,9 @@ const Navbar = () => {
 				<div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="relative flex items-center justify-between h-16">
 						<div className="absolute inset-y-0 left-0 flex items-center">
-							<button onClick={toggleDrawer} className="text-white text-2xl focus:outline-none">
+							<button
+								onClick={toggleDrawer}
+								className="text-white text-2xl focus:outline-none">
 								{isDrawerOpen ? <FaTimes /> : <FaBars />}
 							</button>
 						</div>
@@ -78,13 +54,25 @@ const Navbar = () => {
 								<img src="./src/assets/aqua logo1.png" alt="Logo" />
 							</Link>
 						</div>
-						<button type="button" onClick={handleCartToggle} className="items-center pr-2 cart-icon">
-							<IoMdCart className="text-white" />
-							{cartItems.length >= 1 ?  (<span className="cart-item-qty">{cartItems.length}</span>) : (<span className="cart-item-qty">0</span>) }
-						</button>
-						{showCart && <Cart />}
+						{isLogged && (
+							<div>
+								<button
+									type="button"
+									onClick={handleCartToggle}
+									className="items-center pr-2 cart-icon">
+									<IoMdCart className="text-white" />
+									{totalQuantity >= 1 ? (
+										<span className="cart-item-qty">{totalQuantity}</span>
+									) : (
+										<span className="cart-item-qty">0</span>
+									)}
+								</button>
+								{showCart && <Cart />}
+							</div>
+						)}
 					</div>
 				</div>
+
 				{isDrawerOpen && (
 					<div
 						className="fixed inset-0 bg-gray-800 bg-opacity-75 z-10"
@@ -132,8 +120,7 @@ const Navbar = () => {
 											onClick={() => {
 												logout();
 												toggleDrawer();
-											}}
-										>
+											}}>
 											Logout
 										</button>
 									</li>

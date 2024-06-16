@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { IoMdCart } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../stores/cart";
 
 const ProductDetails = () => {
 	const { id } = useParams();
@@ -9,8 +11,19 @@ const ProductDetails = () => {
 	const [product, setProduct] = useState();
 	const [quantity, setQuantity] = useState(1);
 	const [orderId, setOrderId] = useState(null);
+	const carts = useSelector(store => store.cart.items );
 
 	const isLogged = localStorage.getItem("token");
+	const dispatch = useDispatch();
+	//handle add to cart with redux
+	const handleAddToCart = () => {
+		dispatch(
+			addToCart({
+				product,
+				quantity
+			})
+		)
+	}
 
 	const increment = () => {
 		setQuantity((prevQuantity) => prevQuantity + 1);
@@ -90,48 +103,9 @@ const ProductDetails = () => {
 		}
 	}, []);
 
-	const addProductToCart = async (product, quantity, orderId) => {
-		console.log(orderId);
-		try {
-			// Fetch the order details
-			const orderResponse = await fetch(
-				`https://petco.onrender.com/api/v1/orders/get-order/${orderId}`
-			);
-			const orderData = await orderResponse.json();
-			const order = orderData.order;
-
-			// Check if the product already exists in the order
-			const existingProductIndex = order.products.findIndex(
-				(item) => item.product.id === product.id
-			);
-
-			if (existingProductIndex !== -1) {
-				console.log("Product already exists in the order");
-				return; // Exit the function if product already exists
-			}
-
-			// If product doesn't exist, add it to the order
-			const updatedProducts = [...order.products, { product, quantity }];
-			const dataUpdate = { products: updatedProducts };
-
-			// Update the order with the new product
-			await fetch(`https://petco.onrender.com/api/v1/orders/${orderId}`, {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(dataUpdate),
-			});
-
-			console.log("Product added to cart successfully");
-		} catch (error) {
-			console.error("Error adding product to cart", error);
-		}
-	};
-
 	const replaceBar = (word) => {
-		return word.replace("_", " ")
-	}
+		return word.replace("_", " ");
+	};
 
 	if (loading) return <p>Loading...</p>;
 
@@ -151,7 +125,8 @@ const ProductDetails = () => {
 					<div className="data w-full lg:pr-8 pr-0 xl:justify-start justify-center flex items-center max-lg:pb-10 xl:my-2 lg:my-5 my-0">
 						<div className="data w-full max-w-xl">
 							<p className="text-lg font-medium leading-8 text-yellow-300 mb-4">
-								<span className="text-black">Category:  </span>{ replaceBar(product.category) }
+								<span className="text-black">Category: </span>
+								{replaceBar(product.category)}
 							</p>
 							<h2 className="font-manrope font-bold text-3xl leading-10 text-gray-900 mb-2 capitalize">
 								{product.name}
@@ -164,6 +139,16 @@ const ProductDetails = () => {
 							<p className="text-gray-500 text-base font-normal mb-5">
 								{product.description}
 							</p>
+
+							{isLogged === null && (
+								<Link to="/auth/login">
+									<button
+										className="group py-4 px-5 rounded-full bg-yellow-50 text-yellow-300 hover:text-yellow-500 font-semibold text-lg w-full flex items-center justify-center gap-2 transition-all duration-500 hover:bg-yellow-200">
+										Start Shopping
+									</button>
+								</Link>
+							)}
+
 							{isLogged && (
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-8">
 									<div className="flex sm:items-center sm:justify-center w-full">
@@ -240,7 +225,7 @@ const ProductDetails = () => {
 									<button
 										onClick={(e) => {
 											e.preventDefault();
-											addProductToCart(product, quantity, orderId);
+											handleAddToCart();
 										}}
 										className="group py-4 px-5 rounded-full bg-yellow-50 text-yellow-500 font-semibold text-lg w-full flex items-center justify-center gap-2 transition-all duration-500 hover:bg-yellow-200">
 										<IoMdCart />
