@@ -11,7 +11,7 @@ const ProductDetails = () => {
 	const [product, setProduct] = useState();
 	const [quantity, setQuantity] = useState(1);
 	const [orderId, setOrderId] = useState(null);
-	const carts = useSelector(store => store.cart.items );
+	// const carts = useSelector(store => store.cart.items );
 
 	const isLogged = localStorage.getItem("token");
 	const dispatch = useDispatch();

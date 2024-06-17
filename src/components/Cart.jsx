@@ -6,12 +6,14 @@ import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Assuming you have jwtDecode available for decoding JWT tokens
 import { useStateContext } from "../StateContext";
 import { useSelector, useDispatch } from "react-redux";
-import { changeQuantity } from "../stores/cart";
+import { changeQuantity, removeFromCart } from "../stores/cart";
 
 const Cart = () => {
 	const { showCart, setShowCart } = useStateContext();
 
 	const [product, setProduct] = useState([]);
+	const [cartItems, setCartItems] = useState([])
+	// const [quantity, setQuantity] = useState(carts.quantity)
 
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [orderId, setOrderId] = useState(null);
@@ -59,20 +61,23 @@ const Cart = () => {
 	}, []);
 
 	useEffect(() => {
-		calculateTotalPrice(cartItems);
-	}, [cartItems]);
+		calculateTotalPrice(carts);
+	}, [carts]);
 
-	const increment = () => {
+	const increment = (item) => {
 		dispatch(changeQuantity({
-			product: product,
-			quantity: quantity + 1
+			product: item.product,
+			quantity: item.quantity + 1
 		}))
 	};
+	// const increment = () => {
+	// 	setQuantity((prevQuantity) => prevQuantity + 1);
+	// };
 
-	const decrement = (itemId) => {
+	const decrement = (item) => {
 		dispatch(changeQuantity({
-			product: product,
-			quantity: quantity - 1
+			product: item.product,
+			quantity: item.quantity - 1
 		}))
 	};
 
@@ -84,10 +89,13 @@ const Cart = () => {
 		setTotalPrice(total);
 	};
 
-	const onRemove = (itemId) => {
-		setCartItems((prevItems) =>
-			prevItems.filter((item) => item.product.id !== itemId)
-		);
+	const onRemove = (item) => {
+		dispatch(
+			removeFromCart({
+				product: item.product,
+				quantity: item.quantity
+			})
+		)
 	};
 
 	const updateOrder = async (items, price, id) => {
@@ -153,7 +161,7 @@ const Cart = () => {
 									<div className="flex bottom pt-10">
 										<div className="flex w-full">
 											<button
-												onClick={() => decrement(item.product.id)}
+												onClick={() => decrement(item)}
 												className="group py-4 px-4 border border-yellow-400 rounded-l-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
 												-
 											</button>
@@ -163,13 +171,13 @@ const Cart = () => {
 												{item.quantity}
 											</p>
 											<button
-												onClick={() => increment(item.product.id)}
+												onClick={() => increment(item)}
 												className="group py-4 px-4 border border-yellow-400 rounded-r-full bg-white transition-all duration-300 hover:bg-yellow-50 hover:shadow-sm hover:shadow-yellow-500">
 												+
 											</button>
 											<button
 												className="remove-item"
-												onClick={() => onRemove(item.product.id)}>
+												onClick={() => onRemove(item)}>
 												<TiDeleteOutline className="size-10" />
 											</button>
 										</div>
@@ -180,7 +188,7 @@ const Cart = () => {
 					</div>
 				)}
 
-				{cartItems.length > 0 && (
+				{carts.length > 0 && (
 					<div className="cart-bottom bg-white">
 						<div className="total">
 							<h3>Subtotal: {totalPrice} UGX</h3>

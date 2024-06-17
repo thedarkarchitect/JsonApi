@@ -26,9 +26,16 @@ const cartSlice = createSlice({
                 //if in the cart item quantity is reduced to 0 it will be removed from the cart list
                 state.items = (state.items).filter(item => item.product.id !== product.id)
             }
+        },
+        removeFromCart(state, action) {
+            const { product, quantity } = action.payload;
+            const indexProductId = (state.items).findIndex(item => item.product.id === product.id);
+            if(indexProductId >= 0){
+                state.items = (state.items).filter(item => item.product.id !== product.id)
+            }
         }
     }
 })
 
-export const { addToCart, changeQuantity } = cartSlice.actions;
+export const { addToCart, changeQuantity, removeFromCart } = cartSlice.actions;
 export default cartSlice.reducer;
