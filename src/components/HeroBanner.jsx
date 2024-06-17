@@ -7,8 +7,8 @@ import { Carousel } from "flowbite-react";
 const HeroBanner = () => {
 	return (
 
-		<div>
-			<Carousel className="h-[750px]" slideInterval={3000} pauseOnHover>
+		<div className="w-full h-[750px]">
+			<Carousel slideInterval={3000} pauseOnHover>
 				<img
 					src={hero1}
 					alt="hero1"

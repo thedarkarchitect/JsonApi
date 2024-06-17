@@ -11,13 +11,11 @@ import { changeQuantity, removeFromCart } from "../stores/cart";
 const Cart = () => {
 	const { showCart, setShowCart } = useStateContext();
 
-	const [product, setProduct] = useState([]);
-	const [cartItems, setCartItems] = useState([])
-	// const [quantity, setQuantity] = useState(carts.quantity)
+	const [cartItems, setCartItems] = useState([])//remove
 
 	const [totalPrice, setTotalPrice] = useState(0);
-	const [orderId, setOrderId] = useState(null);
-    const [ownerId, setOwnerId] = useState(null)
+	const [orderId, setOrderId] = useState(null);//remove
+    const [ownerId, setOwnerId] = useState(null)//remove
 	const [error, setError] = useState(null);
 
 	const isLogged = localStorage.getItem("token");
@@ -70,9 +68,6 @@ const Cart = () => {
 			quantity: item.quantity + 1
 		}))
 	};
-	// const increment = () => {
-	// 	setQuantity((prevQuantity) => prevQuantity + 1);
-	// };
 
 	const decrement = (item) => {
 		dispatch(changeQuantity({
