@@ -11,14 +11,10 @@ const Order = () => {
 
 					{/* <!-- Shipping Address --> */}
 					<div className="mb-6">
-						<h2 className="text-xl font-semibold  ">
-							Shipping Address
-						</h2>
+						<h2 className="text-xl font-semibold  ">Shipping Address</h2>
 
 						<div className="mt-4">
-							<label
-								for="address"
-								className="block mb-1">
+							<label htmlFor="address" className="block mb-1">
 								Address
 							</label>
 							<input
@@ -29,9 +25,7 @@ const Order = () => {
 						</div>
 
 						<div className="mt-4">
-							<label
-								for="city"
-								className="blockmb-1">
+							<label htmlFor="city" className="blockmb-1">
 								District
 							</label>
 							<input
@@ -43,21 +37,17 @@ const Order = () => {
 
 						<div className="grid grid-cols-2 gap-4 mt-4">
 							<div>
-								<label
-									for="state"
-									className="block ">
+								<label htmlFor="state" className="block">
 									Street
 								</label>
 								<input
 									type="text"
 									id="state"
-									className="w-full rounded-lg border py-2 px-3 "
+									className="w-full rounded-lg border py-2 px-3"
 								/>
 							</div>
 							<div>
-								<label
-									for="zip"
-									className="block mb-1">
+								<label htmlFor="zip" className="block mb-1">
 									City
 								</label>
 								<input
@@ -71,13 +61,9 @@ const Order = () => {
 
 					{/* <!-- Payment Information --> */}
 					<div>
-						<h2 className="text-xl font-semibold ">
-							Payment Information
-						</h2>
+						<h2 className="text-xl font-semibold ">Payment Information</h2>
 						<div className="mt-4">
-							<label
-								for="card_number"
-								className="block mb-1">
+							<label htmlFor="card_number" className="block mb-1">
 								Card Number
 							</label>
 							<input
@@ -89,9 +75,7 @@ const Order = () => {
 
 						<div className="grid grid-cols-2 gap-4 mt-4">
 							<div>
-								<label
-									for="exp_date"
-									className="blockmb-1">
+								<label htmlFor="exp_date" className="blockmb-1">
 									Expiration Date
 								</label>
 								<input
@@ -101,9 +85,7 @@ const Order = () => {
 								/>
 							</div>
 							<div>
-								<label
-									for="cvv"
-									className="block mb-1">
+								<label htmlFor="cvv" className="block mb-1">
 									CVV
 								</label>
 								<input
@@ -116,7 +98,7 @@ const Order = () => {
 					</div>
 
 					<div className="mt-8 flex justify-end">
-						<button className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 ">
+						<button className="bg-yellow-300 font-semibold text-white px-4 py-2 rounded-lg hover:bg-yellow-500 ">
 							Place Order
 						</button>
 					</div>

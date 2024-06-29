@@ -26,7 +26,9 @@ const PostForm = ({postSubmit}) => {
 			imageUrl,
 		};
 		
-		console.log(newPost)
+		setTitle("")
+		setContent("")
+		setImageUrl("")
 		return postSubmit(newPost);
 	};
 
@@ -78,7 +80,7 @@ const PostForm = ({postSubmit}) => {
 									{ previewImage && <img src={previewImage} alt="preview" className="w-[200px] h-[200px]"/>}
 								</div>
 
-								<div className="flex py-4">
+								<div className="py-4">
 									<button
 										type="submit"
 										role="submit"

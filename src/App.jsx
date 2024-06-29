@@ -18,6 +18,7 @@ import AuthProvider from "./AuthProvider";
 import PrivateRoute from "./PrivateRoute";
 import { StateContext } from "./StateContext";
 import Order from "./pages/Order";
+import Admin from "./pages/Admin";
 
 const App = () => {
 	return (
@@ -25,6 +26,9 @@ const App = () => {
 			<AuthProvider>
 				<StateContext>
 					<Routes>
+						{/* Admin Routes */}
+							<Route path="/adminDash" element={<Admin />} />
+
 						{/* Auth Routes */}
 							<Route path="/auth/SignUp" element={<SignUp />} />
 							<Route path="/auth/Login" element={<Login />} />
