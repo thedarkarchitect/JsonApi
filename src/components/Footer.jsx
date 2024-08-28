@@ -8,7 +8,7 @@ const Footer = () => {
 			<div className="max-w-2xl mx-auto text-white py-5 ">
 				<div className="text-center">
 					<h3 className="text-3xl mb-3"> Download our App </h3>
-					<p> We solve all your pet needs </p>
+					<p> Don't Miss A Post </p>
 					<div className="flex justify-center my-10">
 						<button className="flex items-center border-2 border-yellow-400 w-auto rounded-lg px-4 py-2 mx-2 hover:border-white">
 							<img
@@ -34,7 +34,7 @@ const Footer = () => {
 				</div>
 
 				<div className="flex justify-center">
-					<p className="text-center">&copy; 2024 PetCo All rights reserved</p>
+					<p className="text-center">&copy; 2024 Posts All rights reserved</p>
 				</div>
 
 				<div className="mt-10 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-400">

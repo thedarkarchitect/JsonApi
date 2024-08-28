@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { IoMdCart } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useAuth } from "../AuthProvider";
-import { useStateContext } from "../StateContext";
-import Cart from "./Cart";
-import { jwtDecode } from "jwt-decode";
-import { useSelector } from "react-redux";
 
 const Navbar = () => {
-	const { logout } = useAuth();
-	const { showCart, setShowCart } = useStateContext();
-	const [totalQuantity, setTotalQuantity] = useState(0);
-
-	// const [cartItems, setCartItems] = useState([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-	// const [error, setError] = useState(null);
 	
 	const isLogged = localStorage.getItem("token");
-	const carts = useSelector(store => store.cart.items);
 
 	const toggleDrawer = () => {
 		setIsDrawerOpen(!isDrawerOpen);
@@ -29,13 +15,6 @@ const Navbar = () => {
 		setShowCart(!showCart);
 	};
 
-	useEffect(() => {
-		// const userId = isLogged ? jwtDecode(isLogged).userid : null;
-		let total = 0;
-		carts.forEach(item => total += item.quantity);
-		setTotalQuantity(total);
-
-	}, [carts]);
 
 	return (
 		<div>
@@ -51,25 +30,9 @@ const Navbar = () => {
 						</div>
 						<div className="flex-1 flex items-center justify-center">
 							<Link to="/" className="flex-shrink-0">
-								<img src="./src/assets/aqua logo1.png" alt="Logo" />
+								<p className="font-bold">Posts</p>
 							</Link>
 						</div>
-						{isLogged && (
-							<div>
-								<button
-									type="button"
-									onClick={handleCartToggle}
-									className="items-center pr-2 cart-icon">
-									<IoMdCart className="text-white" />
-									{totalQuantity >= 1 ? (
-										<span className="cart-item-qty">{totalQuantity}</span>
-									) : (
-										<span className="cart-item-qty">0</span>
-									)}
-								</button>
-								{showCart && <Cart />}
-							</div>
-						)}
 					</div>
 				</div>
 
@@ -88,26 +51,7 @@ const Navbar = () => {
 										Home
 									</Link>
 								</li>
-								<li className="text-gray-800 text-lg">
-									<Link to="/posts/blog" onClick={toggleDrawer}>
-										Blog
-									</Link>
-								</li>
-								<li className="text-gray-800 text-lg">
-									<Link to="/products/shop" onClick={toggleDrawer}>
-										Shop
-									</Link>
-								</li>
-								<li className="text-gray-800 text-lg">
-									<Link to="/service" onClick={toggleDrawer}>
-										Services
-									</Link>
-								</li>
-								<li className="text-gray-800 text-lg">
-									<Link to="/wishlist" onClick={toggleDrawer}>
-										Wishlist
-									</Link>
-								</li>
+							
 								<li className="text-gray-800 text-lg">
 									<Link to="/about" onClick={toggleDrawer}>
 										About us

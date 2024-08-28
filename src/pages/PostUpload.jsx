@@ -6,7 +6,7 @@ const PostUpload = () => {
   const createPost = async (newPost) => {
     try {
       console.log(newPost)
-			await fetch("https://petco.onrender.com/api/v1/posts/createPost", {
+			await fetch("https://jsonplaceholder.typicode.com/post", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json", 
@@ -21,7 +21,7 @@ const PostUpload = () => {
   }
 
   return (
-    <div className='bg-yellow-300 h-screen'>
+    <div className='bg-yellow-300 h-screen pb-10'>
       <PostForm postSubmit={createPost}  />
     </div>
   )

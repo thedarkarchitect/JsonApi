@@ -1,13 +1,10 @@
 import LoginForm from "../components/LoginForm";
 import loginPic from "../assets/login.jpg";
-import { useAuth } from "../AuthProvider";
 
 const Login = () => {
 
-	const auth = useAuth();
 
 	const loginUser = async (user) => {
-		auth.loginAction(user)
 	};
 
 	return (

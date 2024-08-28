@@ -1,9 +1,19 @@
 import { useState } from "react";
 import React from "react";
 
-const PostForm = ({postSubmit}) => {
+const UpdatePostForm = ({postSubmit}) => {
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
+
+	const handleImageChange = (e) => {
+		const file = e.target.files[0];
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			setImageUrl(reader.result);
+			setPreviewImage(reader.result);
+		};
+		reader.readAsDataURL(file);
+	}
 
 	const postForm = (e) => {
 		e.preventDefault();
@@ -73,4 +83,4 @@ const PostForm = ({postSubmit}) => {
 	);
 };
 
-export default PostForm;
+export default UpdatePostForm;
